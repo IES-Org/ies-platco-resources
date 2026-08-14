@@ -291,7 +291,7 @@ jobs:
               : ' Overall status: FAIL (see table below for details).';
 
             const summaryMarkdown = [
-              '| = Total Files | = Passed | = Failed | > Score |',
+              '| Total Files | Passed | Failed | Score |',
               '| ---: | ---: | ---: | ---: |',
               `| ${summary.total} | ${summary.passed} | ${summary.failed} | ${summary.score.toFixed(0)}% |`
             ].join('\n');
