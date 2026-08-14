@@ -1,0 +1,125 @@
+# SPDX-License-Identifier: MIT
+# © Crown Copyright. This work forms part of the Information Exchange Standard initiative and is currently under the custodianship of the UK's Department for Business, Innovation, Science and Trade (BIST), acting on behalf of a cross-government group of stakeholders.
+
+name: Synchronise IES Platform and Communications Team Workflows
+
+on:
+  pull_request:
+    branches-ignore:
+      - "main"
+
+jobs:
+  synchronise-platco-workflows:
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Fetch GitHub App token for target repo (write)
+        id: target_token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ secrets.IES_PLATCO_APP_CLIENT_ID }}
+          private-key: ${{ secrets.IES_PLATCO_APP_PRIVATE_KEY }}
+          # principle of least privilege, request only the permissions needed for this job
+          permission-contents: write
+          permission-workflows: write
+
+      - name: Checkout target repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          token: ${{ steps.target_token.outputs.token }}
+
+      - name: Checkout Platform and Communications Team source repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: IES-Org/ies-platco-resources
+          path: ies-platco-resources
+
+      - name: Copy and compare workflow files from Platform and Communications Team repo
+        run: |
+          while IFS= read -r file || [ -n "$file" ]; do
+            # Skip comments and empty lines
+            if [[ -z "$file" || "$file" == \#* ]]; then
+              continue
+            fi
+
+            src="ies-platco-resources/$file"
+            filename="$(basename "$file")"
+            tgt=".github/workflows/$filename"
+
+            if [ ! -f "$src" ]; then
+              echo "WARNING: Source file not found in Platform and Communications Team repository: $src"
+              continue
+            fi
+
+            mkdir -p "$(dirname "$tgt")"
+
+            if [ ! -f "$tgt" ]; then
+              echo "File missing in target repo: $tgt"
+              cp "$src" "$tgt"
+            elif ! cmp -s "$src" "$tgt"; then
+              echo "File differs and will be updated: $tgt"
+              cp "$src" "$tgt"
+            else
+              echo "File is already up to date: $tgt"
+            fi
+          done < ies-platco-resources/organisation-required-workflows.txt
+
+      - name: Copy and compare fork-specific workflow files from Platform and Communications Team repo
+        if: github.event.repository.fork == true && vars.FORK_WORKFLOWS_OPT_IN == 'true'
+        run: |
+          while IFS= read -r file || [ -n "$file" ]; do
+            # Skip comments and empty lines
+            if [[ -z "$file" || "$file" == \#* ]]; then
+              continue
+            fi
+
+            src="ies-platco-resources/tools/fork-support/$file"
+            filename="$(basename "$file")"
+            tgt=".github/workflows/$filename"
+
+            if [ ! -f "$src" ]; then
+              echo "WARNING: Source file not found in Platform and Communications Team repository: $src"
+              continue
+            fi
+
+            mkdir -p "$(dirname "$tgt")"
+
+            if [ ! -f "$tgt" ]; then
+              echo "File missing in target repo: $tgt"
+              cp "$src" "$tgt"
+            elif ! cmp -s "$src" "$tgt"; then
+              echo "File differs and will be updated: $tgt"
+              cp "$src" "$tgt"
+            else
+              echo "File is already up to date: $tgt"
+            fi
+          done < ies-platco-resources/organisation-required-workflows-forks.txt
+
+      - name: Check out pull request branch
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          git fetch origin "$HEAD_REF"
+          git checkout "$HEAD_REF"
+
+      - name: Auto-commit updated workflow files (if applicable)
+        uses: stefanzweifel/git-auto-commit-action@4a55954c782fc1ea30b9056cd3e7a2b40ca8887d # v7.2.0
+        with:
+          commit_message: "feat(PLATCO): synchronise Platform and Communications Team workflows"
+          commit_user_name: ${{ steps.target_token.outputs.app-slug }}[bot]
+          commit_user_email: ${{ steps.target_token.outputs.user-id }}+${{ steps.target_token.outputs.app-slug }}[bot]@users.noreply.github.com
+          file_pattern: .github/workflows/*
+          skip_fetch: true
+
+      - name: Check for file changes and fail if sync is not complete
+        run: |
+          if [ "$(git status --porcelain .github/workflows)" != "" ]; then
+            echo "Some workflow files were changed. Failing status check to block merge until sync is complete."
+            exit 1
+          else
+            echo "No changes required. All Platform and Communications Team workflow files are in sync."
+          fi
