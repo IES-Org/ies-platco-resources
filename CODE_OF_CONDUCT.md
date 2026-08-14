@@ -1,6 +1,6 @@
 # Code of Conduct
 
-**Repository:** `[ies-archetypes]`    
+**Repository:** `ies-platco-resources`    
 **Description:** `Defines expected behaviors, rules, and the enforcement process to ensure professional engagement.`
 
 ## Introduction

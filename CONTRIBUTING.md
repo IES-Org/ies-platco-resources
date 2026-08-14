@@ -1,6 +1,6 @@
 # Contribution Guidelines
 
-**Repository:** `[ies-archetypes]`    
+**Repository:** `ies-platco-resources`    
 **Description:** `Guidelines for issue reporting, documentation suggestions, and the IES controlled contribution model.`
 
 Thank you for your interest in this repository.

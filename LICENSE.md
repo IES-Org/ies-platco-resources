@@ -1,6 +1,6 @@
 # License
 
-**Repository:** `[ies-archetypes]`    
+**Repository:** `ies-platco-resources`    
 **Description:** `Defines the licensing terms for the code and documentation in this repository.`
 
 ---

@@ -1,6 +1,6 @@
 # Maintainers
 
-**Repository:** `[ies-archetypes]`  
+**Repository:** `ies-platco-resources`  
 **Description:** `Lists maintainers responsible for reviewing issues, security, and documentation updates.`
 
 ## Introduction
@@ -26,9 +26,9 @@ We welcome **bug reports, feature suggestions, documentation improvements, and c
 
 | Name | Organisation | Role | Contact |
 | --- | --- | --- | --- |
-| [Maintainer Name] | [Organisation Name] | Lead Maintainer | <email@example.com> |
-| [Maintainer Name] | [Organisation Name] | Security Contact | <email@example.com> |
-| [Maintainer Name] | [Organisation Name] | Documentation Lead | <email@example.com> |
+| James Cruddas | Informed Solutions | Lead Maintainer | <james.cruddas@informed.com> |
+| James Cruddas | Informed Solutions | Security Contact | <james.cruddas@informed.com> |
+| James Cruddas | Informed Solutions | Documentation Lead | <james.cruddas@informed.com> |
 
 For general issues, please **open a GitHub issue** rather than contacting maintainers directly.
 

@@ -1,6 +1,6 @@
 # Changelog
 
-**Repository:** `[ies-archetypes]`  
+**Repository:** `ies-platco-resources`  
 **Description:** `Tracks all notable changes, and version history following Semantic Versioning.`
 
 All notable changes to this project will be documented in this file.
@@ -21,15 +21,9 @@ For ontology development, Semantic Versioning is interpreted as follows:
 
 ### Added
 
-- Placeholder for upcoming features and enhancements.
+- Initial repository resources and associated documentation.
+- Addition of automation workflows to ensure presence of required maintainer files.
 
-### Fixed
-
-- Placeholder for bug fixes and security updates.
-
-### Changed
-
-- Placeholder for changes to existing functionality.
 
 ---
 

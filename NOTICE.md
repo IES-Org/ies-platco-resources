@@ -1,6 +1,6 @@
 # NOTICE
 
-**Repository:** `[ies-archetypes]`  
+**Repository:** `ies-platco-resources`  
 **Description:** `Attribution and legal notices related to the use of this repository, including acknowledgments of external contributions.`
 
 ## License

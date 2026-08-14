@@ -1,0 +1,40 @@
+# SPDX-License-Identifier: MIT
+# © Crown Copyright. This work forms part of the Information Exchange Standard initiative and is currently under the custodianship of the UK's Department for Business, Innovation, Science and Trade (BIST), acting on behalf of a cross-government group of stakeholders.
+
+name: "Pull Request Labeler"
+on:
+  - pull_request_target
+
+jobs:
+  labeler:
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Checkout target repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Checkout IES Platco source repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: IES-Org/ies-platco-resources
+          path: ies-platco-resources
+
+      # Check for the presence of the labeler configuration file in the target repository and use it if available, otherwise 
+      # fall back to the platform and communication team's resources labeler configuration file.
+      - name: Choose labeler config
+        id: labeler-configuration-file-location
+        run: |
+          if [ -f .github/labeler.yml ]; then
+            echo "config=.github/labeler.yml" >> $GITHUB_OUTPUT
+          else
+            echo "config=ies-platco-resources/.github/labeler.yml" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Apply labels
+        uses: actions/labeler@bf12e9b00b37c5c0ca2b87b79b2daf7891dbda13 # v7.0.0
+        with:
+          configuration-path: ${{ steps.labeler-configuration-file-location.outputs.config }}

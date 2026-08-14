@@ -1,32 +1,9 @@
-<!--  
-GUIDANCE:
+# <img src="./assets/images/IES-logo-dark.png" alt="IES Logo" width="50" align="absmiddle"> IES Platform and Communications Team resources
 
-- the title “IES Repository Archetypes” below should be replaced with the name of the repository, written in full, without hyphenation, abbreviations, or contractions. Repository names should be aligned to the guidance captured at <https://github.com/IES-Org/ies-governance/blob/main/processes/development/repository-naming.md>
--->
+**Repository:** `ies-platco-resources`  
+**Description:** `This repository contains administrative material used by the IES Platform and Communications team to support automation workflows in the IES organisation.`
 
-# <img src="./assets/images/IES-logo-dark.png" alt="IES Logo" width="50" align="absmiddle"> IES Repository Archetypes
-
-**Repository:** `[ies-archetypes]`  
-**Description:** `This repository contains administrative material to support with new IES repository creation.`
-
-<!--  
-GUIDANCE:
-
-The overview section should include:
-- the purpose of the repository
-- what the repository contains
-- whether the repository contains ontology content or administrative material
-- how the repository relates to IES
- -->
-
-This repository contains administrative material to support with new IES repository creation. When you create a new IES repository you can use this template as a base to ensure you include all the standard documentation.
-
-<!--  
-GUIDANCE:
-
-The below must not be removed. You must not change anything except the name of the custodian.
-
--->
+This repository contains administrative material used by the IES Platform and Communications team to support automation workflows in the IES organisation. It includes reusable GitHub Actions workflows and other resources to support the Platform and Communications team's technical needs and ensure consistency across IES repositories.
 
 > This repository is public and forms part of the Information Exchange Standard initiative and is currently under the custodianship of the Department for Business, Innovation, Science and Trade (UK), acting on behalf of a cross-government group of stakeholders.
 
@@ -36,44 +13,57 @@ This code is licensed under the MIT License (see [LICENSE.md](LICENSE.md)).
 
 For full terms, see [OGL_LICENSE.md](OGL_LICENSE.md).
 
+## Using the `synchronise-platco-workflows` GitHub Action
 
-<!--  
-GUIDANCE:
+To use the `synchronise-platco-workflows` GitHub Action, a private GitHub application must be installed in your GitHub organisation. This is because the workflow requires `workflow:write` permissions to add content to the `.github/workflows` directory, which cannot currently be achieved using the [`GITHUB_TOKEN`](https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token) authorisation context.
 
-The Quick Start guidance below is specific to the administrative template material contained in this repository. For other repositories, replace this section with:
+Guidance on installing a GitHub application can be found here: [Installing your own GitHub App](https://docs.github.com/en/apps/using-github-apps/installing-your-own-github-app)
 
-- Details of the repository’s contents
-- It’s structure and where users can find key documentation
--->
+### Required GitHub App permissions
 
-## Quick Start
+The GitHub application must have the following **repository permissions**:
 
-> [!IMPORTANT]
-> Before using this repository, please keep in mind, these are just example files and everything has been outlined based on setting up a "new repository" and you are still expected to review any official guidance alongside using this content. If you are using these as a reference to help update an "existing repository", you should also ensure original contributions are properly acknowledged.
+1. `contents:read`  
+2. `contents:write`  
+3. `workflows:read`  
+4. `workflows:write`
 
-### 1. Create new Repository from Template
+### Setting up secrets
 
-Create a new repository from this template.
+Once your GitHub application has been created, the `synchronise-platco-workflows` action must be able to assume the identity of the application. To do this, two repository secrets are required:
 
-### 2. Update Repository Name
+- `IES_PLATCO_APP_CLIENT_ID`  
+- `IES_PLATCO_APP_PRIVATE_KEY`
 
-All references throughout the files, that refer to the repository name `[ies-archetypes]` should be replaced with the new target repository name.
+For ease of administration, these secrets can be set once as **organisation-level secrets**, with access delegated to trusted repositories, rather than adding them to each repository individually.
 
-### 3. Update/Remove all GUIDANCE/EXAMPLE sections
+Guidance on managing organisation secrets is available here:  
+[Creating and managing organisation secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-organization-secrets)
 
-Throughout all the `.md` files are some `GUIDANCE` blocks sometimes also including `EXAMPLE` sections similar that below.
+### Granting repository access
 
-```
-<!-- 
-GUIDANCE: 
- -->
-```
+Assign repository access to your GitHub application for each trusted repository where you want to use the `synchronise-platco-workflows` workflow.
 
-These blocks don't appear on previews, the are just intended to help support updating the markdown file content when you first create a new repository and should be fully removed after content has been updated.
+### Organisational repository ruleset
 
-### 4. Pull Requests
+To trigger the `synchronise-platco-workflows` workflow when pull requests are made in repositories within your organisation, a [repository ruleset](https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-organization-settings/creating-rulesets-for-repositories-in-your-organization) must be created with the following settings enabled:
 
-Included in this repository is an example [PULL_REQUEST_TEMPLATE.md](.github/PULL_REQUEST_TEMPLATE.md), which can be used to help prompt specific content to include in pull requests by contributors.
+- **Require workflows to pass before merging**  
+- **Do not require workflows on creation**
+
+The workflow configuration section of the ruleset should reference the `synchronise-platco-workflows` workflow found in the repository housing these assets.
+
+Because the status check is marked as *required* at the organisation level, the workflow will be triggered automatically - unlike with standard repository rulesets.
+
+## Features  
+
+- **Workflow distribution solution**
+    - [synchronise-platco-workflows.yml](./.github/workflows/synchronise-platco-workflows.yml) - this action can be used to distribute GitHub Actions across repositories in a GitHub organisation, using organisation-level repository rulesets.
+- **Centralised Pull request labelling solution** - labels pull requests using the https://github.com/actions/labeler GitHub Action. A base configuration for use with GitFlow can be found at [labeler.yml](./.github/workflows/pull-request-labeler.yml).
+
+## Pull Requests
+
+Any proposed changes to the main branch must be navigated via a Pull Request, which has been enforced using branch protection policies. Pull requests must include the details in the [PULL_REQUEST_TEMPLATE.md](./.github/PULL_REQUEST_TEMPLATE.md) file.
 
 ## Acknowledgements
 

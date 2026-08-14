@@ -1,6 +1,6 @@
 # Security Policy
 
-**Repository:** `[ies-archetypes]`  
+**Repository:** `ies-platco-resources`  
 **Description:** `Details the responsible disclosure process for security vulnerabilities.`
 
 ## Responsible Disclosure

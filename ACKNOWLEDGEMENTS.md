@@ -1,6 +1,6 @@
 # Acknowledgements
 
-**Repository:** `[ies-archetypes]`    
+**Repository:** `ies-platco-resources`    
 **Description:** `Recognises suppliers, partner organisations, and other contributors to the repository’s development.`
 
 The Information Exchange Standard (IES) initiative would like to acknowledge the contributions of various organisations and individuals who have supported the development of this repository.
@@ -9,14 +9,7 @@ The Information Exchange Standard (IES) initiative would like to acknowledge the
 
 Over time, the following organisations have provided technical expertise, development support, and domain knowledge that have contributed to the evolution of this project:
 
-- Organisation A
-- Organisation B
-- Organisation C
-
-<!--
-GUIDANCE: 
-In place of the above list, provider the actual supplier/organisations details that are relevant to the repository.
- -->
+- [Informed Solutions](https://informed.com)
 
 We are grateful for the collaboration that has helped shape this repository.
 
