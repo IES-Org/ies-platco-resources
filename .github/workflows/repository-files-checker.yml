@@ -308,9 +308,9 @@ jobs:
               : `Results from commit \`${shortSha}\`.`;
 
             await core.summary
-              .addRaw('# Required repository documentation Check Results \n', true)
+              .addRaw('# Required repository documentation Check Results\n', true)
               .addRaw(`\n${combinedTableMarkdown}\n`, true)
-              .addRaw('\n# Summary \n', true)
+              .addRaw('\n# Summary\n', true)
               .addRaw(`\n${overallStatus}\n`, true)
               .addRaw(`\n${summaryMarkdown}\n`, true)
               .addRaw(`\n${commitLine}\n`, true)
