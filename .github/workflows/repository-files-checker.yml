@@ -60,7 +60,7 @@ jobs:
       - name: Checkout archetypes source repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          repository: IES-Org/archetypes
+          repository: IES-Org/ies-archetypes
           path: archetypes
 
       - name: Test for presence of required documentation files and variation from templated content
@@ -275,7 +275,7 @@ jobs:
                 const details = result.failureReasons.length > 0
                   ? result.failureReasons.join('; ')
                   : 'Compliant';
-                const statusLabel = result.status === 'passed' ? '= Pass' : '=4 Fail';
+                const statusLabel = result.status === 'passed' ? '= Pass' : '= Fail';
                 return `| [${result.path}](${href}) | ${statusLabel} | ${details} |`;
               }),
             ].join('\n');
@@ -291,7 +291,7 @@ jobs:
               : ' Overall status: FAIL (see table below for details).';
 
             const summaryMarkdown = [
-              '| = Total Files | = Passed | =4 Failed | > Score |',
+              '| = Total Files | = Passed | = Failed | > Score |',
               '| ---: | ---: | ---: | ---: |',
               `| ${summary.total} | ${summary.passed} | ${summary.failed} | ${summary.score.toFixed(0)}% |`
             ].join('\n');
@@ -310,7 +310,7 @@ jobs:
             await core.summary
               .addRaw('# Required repository documentation Check Results \n', true)
               .addRaw(`\n${combinedTableMarkdown}\n`, true)
-              .addRaw('\n# Summary <\n', true)
+              .addRaw('\n# Summary \n', true)
               .addRaw(`\n${overallStatus}\n`, true)
               .addRaw(`\n${summaryMarkdown}\n`, true)
               .addRaw(`\n${commitLine}\n`, true)
