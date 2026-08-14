@@ -91,7 +91,7 @@ Please see:
 
 We take security seriously. If you believe you have found a security vulnerability in this repository, please follow our responsible disclosure process outlined in [SECURITY.md](SECURITY.md).
 
----
+----
 
 **Maintained as part of the Information Exchange Standard initiative.**
 
